@@ -1,0 +1,5 @@
+<?php
+
+$usermail = '';
+$usermdp = '';
+$contact = '';

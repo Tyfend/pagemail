@@ -63,13 +63,18 @@ if (session_status() != PHP_SESSION_ACTIVE){
 	session_start();
 }
 
-$token = rand_pwd(12);
+
 
 //envoi du mail avec token 
 if (isset($_SESSION["mail"]) && ($_SESSION["mail"]) == 'coucou'){
-	$objet = "Coucou";
-	$message = ["html" => '<h1>J\'ai réussi !</h1>'.'<p>Voici ton token aléatoire :</p>'.$token, 'text' => 'un texte'];
-	sendMail($objet, $contact, $message);
+	$token = rand_pwd(12);
+	fopen($token, 'w');
+
+	sendMail(	"Coucou", 
+				$contact,  
+				["html" => '<h1>J\'ai réussi !</h1>'.'<p>Voici ton token aléatoire :</p>'.$token, 'text' => 'un texte']
+			);
+	
 	unset($_SESSION["mail"]);
 }else{
 	$_SESSION["mail"] = 'coucou';

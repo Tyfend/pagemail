@@ -2,9 +2,10 @@
 
 	require_once 'config.php';
 	require_once 'vendor/autoload.php';
+	date_default_timezone_set('Europe/Paris') ;
 
 
-
+// étape 1
 function sendMail($objet, $mailto, $msg, $cci = true)//:string
 {
 	require 'config.php';
@@ -45,23 +46,37 @@ function sendMail($objet, $mailto, $msg, $cci = true)//:string
 	return $mailer->send($message);
 }
 
+// étape 2
+function rand_pwd($nb_car = 10, $chaine ='azertyuiopqsdfghjklmwxcvbn0123456789') {
+	$nb_lettre = strlen($chaine) -1;
+	$generation = '';
+	for($i=0; $i < $nb_car; $i++) {
+		$pos = mt_rand(0, $nb_lettre);
+		$car = $chaine[$pos];
+		$generation .= $car;
+	}
+	return $generation;
+}
+
+
 if (session_status() != PHP_SESSION_ACTIVE){
 	session_start();
 }
 
+$token = rand_pwd(12);
 
-
-	if (isset($_SESSION["mail"]) && ($_SESSION["mail"]) == 'coucou'){
-		$objet = "Coucou";
-		$message = ["html" => '<h1>J\'ai réussi !</h1>', 'text' => 'un texte'];
-		sendMail($objet, $contact, $message);
-		unset($_SESSION["mail"]);
-		
-	}else{
-		$_SESSION["mail"] = 'coucou';
-		echo 'Rafraîchir la page pour voir votre surprise';
-	}
+//envoi du mail avec token 
+if (isset($_SESSION["mail"]) && ($_SESSION["mail"]) == 'coucou'){
+	$objet = "Coucou";
+	$message = ["html" => '<h1>J\'ai réussi !</h1>'.'<p>Voici ton token aléatoire :</p>'.$token, 'text' => 'un texte'];
+	sendMail($objet, $contact, $message);
+	unset($_SESSION["mail"]);
+}else{
+	$_SESSION["mail"] = 'coucou';
+	echo 'Rafraîchir la page pour voir votre surprise';
+}
 
 	
+
 
 

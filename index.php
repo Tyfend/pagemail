@@ -63,25 +63,34 @@ if (session_status() != PHP_SESSION_ACTIVE){
 	session_start();
 }
 
+// version 2 étape 2
+	// function idcool($length = 12){
+	//     $text="azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890";
+	//     return substr(md5(str_shuffle(str_repeat($text, $length))), 0, $length);
+	// }
+
+// autre façon pour token
+	//$text="azertyuiopqsdfghjklmwxcvbnAZERTYUIOPQSDFGHJKLMWXCVBN1234567890";
+	//var_dump(substr(md5(str_shuffle(str_repeat($text, 12))), 0, 12));
+	//var_dump(substr(uniqid(), 1,13));
 
 
 //envoi du mail avec token 
 if (isset($_SESSION["mail"]) && ($_SESSION["mail"]) == 'coucou'){
 	$token = rand_pwd(12);
+	// $token = idcool(); 
 	fopen($token, 'w');
 
 	sendMail(	"Coucou", 
 				$contact,  
 				["html" => '<h1>J\'ai réussi !</h1>'.'<p>Voici ton token aléatoire :</p>'.$token, 'text' => 'un texte']
 			);
-	
+
 	unset($_SESSION["mail"]);
 }else{
 	$_SESSION["mail"] = 'coucou';
 	echo 'Rafraîchir la page pour voir votre surprise';
 }
-
-	
 
 
 
